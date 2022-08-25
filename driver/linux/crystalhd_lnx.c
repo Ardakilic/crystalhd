@@ -667,11 +667,11 @@ static int __init chd_dec_pci_probe(struct pci_dev *pdev,
 	}
 
 	/* Set dma mask... */
-	if (!pci_set_dma_mask(pdev, DMA_BIT_MASK(64))) {
-		pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(64));
+	if (!dma_set_mask(dev, DMA_BIT_MASK(64))) {
+		dma_set_coherent_mask(dev, DMA_BIT_MASK(64));
 		pinfo->dmabits = 64;
-	} else if (!pci_set_dma_mask(pdev, DMA_BIT_MASK(32))) {
-		pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32));
+	} else if (!dma_set_mask(dev, DMA_BIT_MASK(32))) {
+		dma_set_coherent_mask(dev, DMA_BIT_MASK(32));
 		pinfo->dmabits = 32;
 	} else {
 		dev_err(dev, "%s: Unabled to setup DMA %d\n", __func__, rc);
