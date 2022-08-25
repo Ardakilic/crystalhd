@@ -654,7 +654,11 @@ BC_STATUS crystalhd_map_dio(struct crystalhd_adp *adp, void *ubuff,
 		}
 	}
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,9,0)
+	mmap_read_lock(current->mm);
+#else
 	down_read(&current->mm->mmap_sem);
+#endif
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4,9,0)
 	res = get_user_pages(uaddr, nr_pages, rw == READ ? FOLL_WRITE : 0,
@@ -667,7 +671,11 @@ BC_STATUS crystalhd_map_dio(struct crystalhd_adp *adp, void *ubuff,
 			     0, dio->pages, NULL);
 #endif
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,9,0)
+	mmap_read_unlock(current->mm);
+#else
 	up_read(&current->mm->mmap_sem);
+#endif
 
 	/* Save for release..*/
 	dio->sig = crystalhd_dio_locked;
