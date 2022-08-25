@@ -83,7 +83,7 @@ struct crystalhd_dio_req {
 	struct scatterlist				*sg;
 	int								sg_cnt;
 	int								page_cnt;
-	int								direction;
+	enum dma_data_direction						direction;
 	struct crystalhd_dio_user_info	uinfo;
 	void							*fb_va;
 	uint32_t						fb_size;

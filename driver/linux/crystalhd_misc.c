@@ -724,7 +724,7 @@ BC_STATUS crystalhd_map_dio(struct crystalhd_adp *adp, void *ubuff,
 #endif
 	}
 	dio->sg_cnt = dma_map_sg(&adp->pdev->dev, dio->sg,
-				 dio->page_cnt, (enum dma_data_direction)dio->direction);
+				 dio->page_cnt, dio->direction);
 	if (dio->sg_cnt <= 0) {
 		dev_err(dev, "sg map %d-%d\n", dio->sg_cnt, dio->page_cnt);
 		crystalhd_unmap_dio(adp, dio);
@@ -782,7 +782,7 @@ BC_STATUS crystalhd_unmap_dio(struct crystalhd_adp *adp, struct crystalhd_dio_re
 		}
 	}
 	if (dio->sig == crystalhd_dio_sg_mapped)
-		dma_unmap_sg(&adp->pdev->dev, dio->sg, dio->page_cnt, (enum dma_data_direction)dio->direction);
+		dma_unmap_sg(&adp->pdev->dev, dio->sg, dio->page_cnt, dio->direction);
 
 	crystalhd_free_dio(adp, dio);
 
